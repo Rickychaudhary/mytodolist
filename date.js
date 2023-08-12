@@ -7,5 +7,5 @@ exports.getDate = function() {
         month: "long"
     };
 
-    return today.toLocaleDateString("hi-IN", options);
+    return today.toLocaleDateString("EN-US", options);
 };

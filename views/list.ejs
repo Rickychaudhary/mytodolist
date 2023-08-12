@@ -1,27 +1,42 @@
 <%- include("header") -%>
 
-   <div class="box" id="heading">
+   <div class="stylebox" id="heading">
     <h1> <%= listTitle %> </h1>
-   </div>
 
-   <div class="box">
+   
+    <form action="/" class=" stylebox"  method="post">
+        <input type="text" class="fontclr" name="newItem" placeholder="Write something todo." autocomplete="off">
+        <button type="submit"  name="list">+</button>
+    </form>
+
+
+   <div class="stylebox todo">
+      <h3 class="fontclr"> 🎃 Todo List</h3>
+
     <% newListItem.forEach(function(item) { %>
         <form action="/delete" method="post">
         <div class="item">
             <input type="checkbox" name="checkbox" value="<%= item._id %>" onchange="this.form.submit()">
-            <p><%= item.name  %></p>
+            <p class="fontclr"> <%= item.name %></p>
         </div>
         <input type="hidden" name="listName" value="<%= listTitle %>">
+        <input type="hidden" name="doneName" value="<%= item.name %>">
     </form>
 
         <% }) %>
        
-        <form action="/" class="item" method="post">
-            <input type="text" name="newItem" placeholder="newItem" autocomplete="off">
-            <button type="submit" name="list" value="<%= listTitle %>">+</button>
-        </form>
-
    </div>
 
+   <p class="fontclr completedheading">Completed( <%= completeitemlength %> / <%= Todoitemlength %> )</p>
+   <div class="completed">
+    <% completeditems.forEach(function(done){ %>
+        <form action=" /delete_completetask" method="post">
+          <p  class="completedtask">✅ <%= done.name %> <button class="delete-btn" ondblclick="this.form.submit()">X </button></p>
+          <input type="hidden" name="deletebtn" value="<%= done._id %>"> 
+          <% }) %>
+        </form>
+    
+   </div>
+</div>
 
 <%- include("footer") -%>

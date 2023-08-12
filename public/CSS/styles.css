@@ -1,19 +1,31 @@
 html {
     background-color: #E4E9FD;
-    background-image: -webkit-linear-gradient(65deg, #A683E3 50%, #E4E9FD 50%);
+    background: linear-gradient(300deg, #072c38, #C70039,#1b074c);
+    background-size: 180% 180%;
+    animation: gradient-animation 18s ease infinite;
     min-height: 1000px;
-    font-family: 'helvetica neue';
+    font-family: 'Roboto', sans-serif;
+    forced-color-adjust: white;
   }
-  
+ .fontclr{
+   color: #fff;
+ }
+ h3.fontclr{
+  text-align: center;
+  font-size: 1.4rem;
+ }
   h1 {
     color: #fff;
     padding: 10px;
   }
   
-  .box {
+  .stylebox {
     max-width: 400px;
     margin: 50px auto;
-    background: white;
+    margin-bottom: 11px;
+    background: linear-gradient(300deg, #072c38, #1b074c);
+    background-size: 180% 180%;
+    animation: gradient-animation 18s ease infinite;
     border-radius: 5px;
     box-shadow: 5px 5px 15px -5px rgba(0, 0, 0, 0.3);
   }
@@ -24,10 +36,16 @@ html {
   }
   
   .item {
-    min-height: 70px;
+    height: 50px;
     display: flex;
     align-items: center;
-    border-bottom: 1px solid #F1F1F1;
+    border: 1px solid #F1F1F1;
+    border-radius: 10px;
+    width: 90%;
+    margin: 10px;
+    background-color: #653eaa;
+    font-size: 1.1rem;
+
   }
   
   .item:last-child {
@@ -43,12 +61,12 @@ html {
     margin: 20px;
   }
   
-  p {
+  p.fontclr {
     margin: 0;
     padding: 20px;
-    font-size: 20px;
+    font-size: 1.34rem;
     font-weight: 200;
-    color: #00204a;
+    
   }
   
   form {
@@ -56,20 +74,19 @@ html {
     margin-left: 20px;
   }
   
-  button {
-    min-height: 50px;
-    width: 50px;
+  button[type="submit"] {
+    min-height: 20px;
+    width: 30px;
     border-radius: 50%;
     border-color: transparent;
-    background-color: #A683E3;
+    background-color: #c7b8e1;
     color: #fff;
-    font-size: 30px;
+    font-size: 22px;
     padding-bottom: 6px;
     border-width: 0;
   }
   
   input[type="text"] {
-    text-align: center;
     height: 60px;
     top: 10px;
     border: none;
@@ -81,7 +98,9 @@ html {
   
   input[type="text"]:focus {
     outline: none;
-    box-shadow: inset 0 -3px 0 0 #A683E3;
+    box-shadow: inset 0 -3px 0 0 #7645c9;
+
+    margin-bottom: 6%;
   }
   
   ::placeholder {
@@ -93,4 +112,37 @@ html {
     color: white;
     color: rgba(0, 0, 0, 0.5);
     text-align: center;
+  }
+
+  .completedheading{
+    display: flex;
+    margin-top: 0;
+    font-size: 20px;
+  }
+
+  .completedtask{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    height: 40px;
+    border: none;
+    border-radius: 10px;
+    background-color: #FFB26B;
+    font-size: 1.1rem;
+    width: 330px;
+    margin: 10px;
+    justify-content: space-between;
+  }
+
+  .completed{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .delete-btn{
+    border-color: transparent;
+    background-color: transparent;
+    font-size: 19px;
+    color: #F7F1E5;
   }

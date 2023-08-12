@@ -21,26 +21,11 @@ const itemschema = new mongoose.Schema({
     name: String
 });
 
-const listschema = new mongoose.Schema({
-    name: String,
-    customlistitems: [itemschema]
-});
-
-const List = mongoose.model("List", listschema);
 
 const Item =  mongoose.model("Item", itemschema);
 
-const item1 = new Item({
-    name: "Welcome To TO-Do-List."
-});
-const item2 = new Item({
-    name: "click + to add new task."
-});
-const item3 = new Item({
-    name: "Kidda fer."
-});
-
-const defaultItems = [item1,item2,item3];
+const donetask = mongoose.model("Donetask", itemschema);
+const defaultItems = [];
 
 mongoose.connect('mongodb://127.0.0.1:27017/To-Do-ListDB', {
     useNewUrlParser: true,
@@ -50,40 +35,22 @@ mongoose.connect('mongodb://127.0.0.1:27017/To-Do-ListDB', {
     console.log("Succefully connected to mongoose");
           
              app.get("/", function(req,res){
-                
+             
                 Item.find()
                   .then(function(founditems){
-                    if(founditems.length === 0){
-                        Item.insertMany(defaultItems);
-                        res.redirect("/");
-                       }
-                    else{
-                        res.render("list" ,{listTitle: day, newListItem: founditems});
+                    donetask.find()
+                    .then(function(complete){
+                        if(founditems.length === 0){
+                            res.render("list" ,{listTitle: day, newListItem: defaultItems, completeditems: complete, completeitemlength: complete.length, Todoitemlength: founditems.length + complete.length});
                         }
-                     });
+                        else{
+                                res.render("list" ,{listTitle: day, newListItem: founditems , completeditems: complete, completeitemlength: complete.length, Todoitemlength: founditems.length + complete.length});                    
+                        }
+                    });                                
+                  });
+                
             });
 
-            app.get("/:customListName", function(req,res){
-                const customListName = req.params.customListName;
-                  
-                List.findOne({name: customListName})
-                 .then(function(foundList) {
-                    if(!foundList){
-                        const newlist = new List({
-                            name: customListName,
-                            customlistitems: defaultItems
-                        });
-                        newlist.save();
-                        res.redirect("/");
-                    }
-                    else{
-                        res.render("list", {listTitle: customListName, newListItem: foundList.customlistitems});
-                    }
-                 })
-                 .catch(function(err){
-                    console.error("Error while fetching data : ", err);
-                 });               
-            });
 
             app.post("/", function(req,res){
                 const Newinput = req.body.newItem;
@@ -91,56 +58,42 @@ mongoose.connect('mongodb://127.0.0.1:27017/To-Do-ListDB', {
                  
                 const newitem = new Item({
                     name: Newinput
-                });
-            
-                if(listName === day || listName === "Today")
-                {
-                    newitem.save();
+                }); 
+                    newitem.save()
                     res.redirect("/");
-                }
-                else{
-                    List.findOne({name: listName})
-                      .then(function(foundList){
-                        foundList.customlistitems.push(newitem);
-                        foundList.save()
-                         .then(function(){
-                            res.redirect("/" + listName);
-                         })
-                         .catch(function(err){
-                            console.error("Error in Rediecting to customList route : ",err);
-                         });
-                           
-                      })
-
-                      .catch(function(err){
-                        console.error("Error Found : ", err);
-                      });
-
-                }  
+     
+            
             });
 
             app.post("/delete", function(req,res){
                 const checkedItemId = req.body.checkbox;
-                const listName = _.capitalize(req.body.listName);
-
-                if(listName === day || listName === "Today")
-                {
+                const completetaskname = req.body.doneName;
+                    
+                  const completetask = new donetask({
+                    name: completetaskname
+                  });
+                    completetask.save();  
+                    
                     Item.findByIdAndRemove(checkedItemId)
                     .then( function(){
                         res.redirect("/");
+                    })
+                    .catch(function(err){
+                        console.error("Error while ticking checkbox : ",err);
                     });
-                }
-                else{
-                   List.findOneAndUpdate({name: listName}, {$pull: {customlistitems: {_id: checkedItemId}}})
-                       .then(function(){
-                        res.redirect("/" + listName);
-                       })
-                       .catch(function(err){
-                        console.error("Error in redirecting to"+listName+"route",err);
-                       }); 
-                }
-
             });
+
+            app.post("/delete_completetask",function(req,res){
+                const deletebtn = req.body.deletebtn;
+                donetask.findByIdAndRemove(deletebtn)
+                .then(function(){
+                    res.redirect("/");
+                })
+                .catch(function(err){
+                    console.error("Error while deleting completed task : ",err);
+                });
+
+            })
    })
 
    .catch(err => console.error('Error connecting to MongoDB:', err));
