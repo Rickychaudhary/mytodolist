@@ -27,7 +27,7 @@ const Item =  mongoose.model("Item", itemschema);
 const donetask = mongoose.model("Donetask", itemschema);
 const defaultItems = [];
 
-mongoose.connect('mongodb://127.0.0.1:27017/To-Do-ListDB', {
+mongoose.connect('mongodb+srv://21bcs082:Test123@cluster0.rlziopl.mongodb.net/To-Do-ListDB', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }) 
